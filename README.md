@@ -12,12 +12,6 @@
 
 
 
-** Tabla de Contenido **
-
-[TOCM]
-
-[TOC]
-
 #### Instalacion de Bootstrap
 ```html
 ` <!DOCTYPE html>
@@ -77,8 +71,8 @@ Es necesario tener en cuenta las reglas que permiten el acceso, lectura y modifi
 
 #### Reglas de Firebase Storage 
 Es importante tambien el configurar las reglas que permiten el acceso para añadir contenido dentro de nuestro servidor de archivos de firebase.
- ``` 
- rules_version = '2';
+
+ ```rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
@@ -94,7 +88,7 @@ service firebase.storage {
  
  `
 
-
+-----
 
 #### Añadir nuestro proyecto de firebase al HTML　
 
