@@ -5,16 +5,22 @@
 [![](https://firebase.google.com/images/brand-guidelines/logo-standard.png)](http://https://firebase.google.com/images/brand-guidelines/logo-standard.png)
 - Esta aplicación es una simulación de una app en un entorno completamente de una red social de mensajería en tiempo real, modelando una versión de "WhatsApp". 
 
-# Caracteristicas:
+#Caracteristicas:
 1. Esta App Web esta escrita sin ningún Framework de JavaScript 
 2. Emplea los servicios de registro de usuarios, base de datos en tiempo real y un servidor de archivos de la plataforma Firebase de Google.
 3. Hecha en una sola pagina HTML (SPA, con HTML, CSS, Boostrap)
 
 
 
-#### Instalacion de Bootstrap
+**Tabla de Contenido**
+
+[TOCM]
+
+[TOC]
+
+####Instalacion de Bootstrap
 ```html
-` <!DOCTYPE html>
+`<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -35,11 +41,11 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
   </body>
-</html> `
+</html>`
  ```
 
 
-# Instalacion y Configuración
+#Instalacion y Configuración
 
 > Instalación de Firebase al proyecto
 
@@ -51,7 +57,7 @@ Antes de empezar en HTML, es necesaria la configuración e inicialización de la
 - Firebase Realtime Database
 - Firebase Firestore
 
-### Pasos para Registrar y Administrar Usuarios
+###Pasos para Registrar y Administrar Usuarios
 
 [Registro a Usuarios ](https://firebase.google.com/docs/auth/web/start)
 [Acceso a Usuarios existentes](https://firebase.google.com/docs/auth/web/start)
@@ -59,7 +65,7 @@ Antes de empezar en HTML, es necesaria la configuración e inicialización de la
 [Creación del Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?hl=es)
 
 
-#### Reglas de Firebase Realtime 
+####Reglas de Firebase Realtime 
 Es necesario tener en cuenta las reglas que permiten el acceso, lectura y modificación de los datos de los usuarios al iniciar sesión.
 
 `{
@@ -69,10 +75,10 @@ Es necesario tener en cuenta las reglas que permiten el acceso, lectura y modifi
   }
 }`
 
-#### Reglas de Firebase Storage 
+####Reglas de Firebase Storage 
 Es importante tambien el configurar las reglas que permiten el acceso para añadir contenido dentro de nuestro servidor de archivos de firebase.
-
- ```rules_version = '2';
+ ``` 
+ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
@@ -88,9 +94,9 @@ service firebase.storage {
  
  `
 
------
 
-#### Añadir nuestro proyecto de firebase al HTML　
+
+####Añadir nuestro proyecto de firebase al HTML　
 
 ```javascript
 var firebaseConfig = {
@@ -106,7 +112,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 ```
 
-#### Añadir firebase al HTML
+####Añadir firebase al HTML
 
 ```html
 <!DOCTYPE html>
@@ -127,20 +133,20 @@ firebase.initializeApp(firebaseConfig);
 
 ----
 
-### Añadir Firebase Storage para almacenar Fotos
+###Añadir Firebase Storage para almacenar Fotos
 Al agregar firebase storage podemos subir fotos y videos para compartirlo con todos los usuarios conectados a nuestra app, por tanto, se debe al igual que el resto de los servicios de firebase, añadirlo a nuestro HTML y de igual manera mencionar la referencia (o repositorio) donde se guardarán los datos. Para ver como configurar el repositorio, [Ver Documentación Oficial](https://firebase.google.com/docs/storage/web/start)
 
-##### Agregar una foto de perfil
+#####Agregar una foto de perfil
 - En este caso se debe crear la etiqueta `<img>` correspondiente donde se ubicará la foto de Perfil del usuario, el cual agregará al momento de Iniciar Sesión en la App. 
 
-##### Ubicar la foto en el repositorio  de storage firebase
+#####Ubicar la foto en el repositorio  de storage firebase
 - Al crear el repositorio en una variable`var storageRef = firebase.storage().ref('Ejemplo');` podemos ubicar en donde se guardarán una vez, el usuario suba sus fotos.
 
-##### Añadir la foto en la Base de Datos
+#####Añadir la foto en la Base de Datos
 - La base de datos debe contener el campo `foto: 'url'` donde el observador de cambios hechos por los usuarios hará referencia para luego mostrarla en la etiqueta `<img id="foto">` creada.
 
 
-##### Mostar Imagen en la foto de Perfil
+#####Mostar Imagen en la foto de Perfil
 - Para ello se debe acceder a la propiedad foto añadida en la base de datos realtime para obtener el acceso a esta una vez descargada.
 
 #####Mostrar foto de perfil
@@ -150,5 +156,5 @@ Al agregar firebase storage podemos subir fotos y videos para compartirlo con to
 
 - De  igual manera las conversaciones son enviadas por el valor de los `<input>` en la barra de mensajes y de la misma manera proyectados en el dashboard y replicados en las bases de datos de los Perfiles Creados.
 
-### Notas Finales
+###Notas Finales
 >Los datos enviados en el chat seran leidos en tiempo real por todo aquel que tenga acceso, en este ejemplo la mensajeria no es privada por cada usuario.
