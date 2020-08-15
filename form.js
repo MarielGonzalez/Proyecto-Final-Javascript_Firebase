@@ -37,9 +37,9 @@ let passw = document.getElementById("inputPsswd").value;
 
 function signUp() {
 
-    /*name = document.getElementById("inputName").value;
+    name = document.getElementById("inputName").value;
     email = document.getElementById("inputEmail").value;
-    passw = document.getElementById("inputPsswd").value;*/
+    passw = document.getElementById("inputPsswd").value;
     if (email == "" || passw == "" || name == "") {
         alert('Empty Fields')
         clearUser()
@@ -153,13 +153,15 @@ function clearUser() {
 
 
 let imageElement = document.querySelector('#image');
-let display = document.querySelector('#displayName');
+let showName = document.querySelector('#displayName');
+let showStatus = document.querySelector('#aboutMe');
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         firebase.database().ref('Profile/' + user.uid).on('value', function(s) {
                 var d = s.val()
-                display.innerHTML = `<p>${d.username}</p>`
+                showName.innerHTML = `<p>${d.username}</p>`
+                showStatus.innerHTML = `<p>${d.aboutMe}</p>`
 
             })
             //const logout = document.getElementById('out')
@@ -207,6 +209,16 @@ function logOut() {
 
 }
 
+//actualizar, editar estatus 
+function updateAboutMe() {
+    var user = firebase.auth().currentUser;
+    let newStatus = document.getElementById("newStatus").value
+    firebase.database().ref('Profile/' + user.uid).update({
+        aboutMe: newStatus
+    }).then(alert('Estado Actualizado'))
+
+}
+
 
 //Actualizar Username
 let updateUsername = () => {
@@ -217,35 +229,25 @@ let updateUsername = () => {
     }).then(alert('borrado'))
 }
 
-let update = () => {
-    var user = firebase.auth().currentUser;
-    let newPassword = document.getElementById('newPass')
-        //user.updateProfile({
-        //    displayName: nameUser
-        //})
-    updatePhoto();
-    updatePass();
-    let AboutMe = document.getElementById('AboutMe').value
-    let EditAboutMe = document.getElementById('EditAboutMe');
-    EditAboutMe.innerHTML = `${AboutMe}`
-
-}
 
 
 function updatePass() {
-    let newPassword = document.getElementById('newPass').value
     var user = firebase.auth().currentUser;
+    let newPassword = document.getElementById('newPass').value
     user.updatePassword(newPassword).then(function() {
         alert('Password updated')
     }).catch(function(error) {
         // An error happened.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error.message, error.code)
     });
 }
 
 function updatePhoto() {
     var user = firebase.auth().currentUser;
 
-    const file = document.querySelector('#foto').files[0];
+    const file = document.querySelector('#fotoPerfil').files[0];
     const namePhoto = new Date() + '-' + file.name
     if (!file) {
 
@@ -314,6 +316,8 @@ let sendPic = () => {
     var user = firebase.auth().currentUser;
     let fileChat = document.querySelector('#fotoChat').files[0];
     const namePhoto = new Date() + '-' + fileChat.name
+
+
     if (!fileChat) {
 
     } else {
@@ -324,20 +328,25 @@ let sendPic = () => {
         const task = ref.child(namePhoto).put(fileChat, metadata);
 
         task.then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+            firebase.database().ref('Profile/' + user.uid).on('value', function(s) {
+                var snap = s.val()
 
-            var downloadURL = url
-            firebase.database().ref('Chat_Pictures/' + user.uid).set({
-                sender: currentuser,
-                image: downloadURL
+                var downloadURL = url
+                firebase.database().ref('Chat_Pictures/' + user.uid).set({
+                    sender: snap.username,
+                    image: downloadURL
+                })
+
+                db.collection("Chat_Pictures").add({
+                    sender: snap.username,
+                    image: downloadURL
+                }).then(result => {
+                    alert('Mensaje Enviado')
+
+                })
+
             })
 
-            db.collection("Chat_Pictures").add({
-                sender: currentuser,
-                image: downloadURL
-            }).then(result => {
-                alert('Mensaje Enviado')
-
-            })
 
 
         })
@@ -354,7 +363,7 @@ let pic = document.getElementById('pictures');
         for (let i of doc.docs) {
 
             pic.innerHTML += ` 
-            <div class="message-text"><img src="${i.data().image}" width="500px" height="300px">  <div onclick="deleteChat('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+            <div class="message-text"><img src="${i.data().image}" width="500px" height="300px">  <div onclick="deletePhoto('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
             <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
         </svg></div>
@@ -379,33 +388,21 @@ let deleteChat = (id) => {
 
 }
 
-let deletePhoto = () => {
-    let user = firebase.auth().currentUser
-        // Create a reference to the file to delete
-    firebase.storage().ref('/userProfile/' +
-        user.uid + '/').child('/userProfile/' + user.uid).delete().then(function() {
-        // File deleted successfully
-        alert('picture deleted')
+let deletePhoto = (id) => {
+    db.collection("Chat_Pictures").doc(id).delete().then(function() {
+        //alert('Borrado');
     }).catch(function(error) {
-        // Uh-oh, an error occurred!
-    });
-    firebase.database().ref('Profile/' + user.uid.foto).remove().then(alert('borrado'))
+        console.log('Error', error)
+
+    })
+
 
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+//Prueba con otras formas de implementacion 
 /*Borrar mensajes de la conversacion en el realtime database
 let deleteChat = (id) => {
     //firebase.database().ref('Profile/' + user.uid).remove() {
@@ -416,16 +413,16 @@ let deleteChat = (id) => {
 
     })
 
-}*/
+}
 //firebase.database().ref('Profile/conversations').on('value', snap => chat.innerHTML)
 /*database.ref('Profile').on("child_added", function(snap) {
     var user = snap.val();
     const imageElement = document.querySelector('#image');
     imageElement.src = user.foto;
 
-})*/
+})
 
-/*
+
     let message = document.getElementById('message').value
     firebase.database().ref('Profile/conversations').set({
             conversations: {
@@ -441,8 +438,8 @@ let deleteChat = (id) => {
 
     })
     message.value = ""
-}*/
-/*function signUp() {
+
+function signUp() {
 
     const email = document.getElementById("inputEmail").value;
     const passw = document.getElementById("inputPsswd").value;

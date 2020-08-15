@@ -26,14 +26,34 @@
 
 <body>
 
-
+    <!-- Barra de navevgacion -->
     <section id="nav" style="display: none;">
         <nav class="navbar navbar-light" style="background-color: #badfab;">
             <a class="navbar-brand"> <img src="b.png" width="150" height="50"></a>
             <form class="form-insline">
 
-                <button class="btn btn-dark my-2 my-sm-0" type="submit" onclick="logOut()">Sign Out</button>
+
+
             </form>
+            <div class="btn-group dropleft">
+                <a style="color: seashell;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div><i class="fas fa-cog" style="font-size: 14px; cursor: pointer;"></i></div>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#passModal"><svg style="color:#884e2c;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg> Cambiar Contraseña</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal"><svg style="color:#884e2c;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg>  Cambiar Username </a>
+                    <a class="dropdown-item" href="#" onclick="logOut()"> <i class="fas fa-sign-out-alt" style="color:#884e2c;"></i> Cerrar Session</a>
+                </div>
+            </div>
+
+
         </nav>
 
 
@@ -41,185 +61,224 @@
 
 
 
-
+        <!-- Perfil -->
         </div>
         <div class="card" style="width: 18rem; position:absolute; margin: 20px;">
-            <img class="card-img-top rounded float-left" alt="Foto del usuario" id="image" style="cursor: pointer;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+
+            <img class="card-img-top rounded float-left" src="pm.png" alt="Foto del usuario" id="image" style="cursor: pointer;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             <div class="collapse" id="collapseExample">
-                <div class="card card-body">
+                <div class="card card-body">Acerca de Mi:
+                    <p id="aboutMe"></p>
+                    <div style="cursor: pointer;"><i class="fas fa-pen-square"></i><a href="#" data-toggle="modal" data-target="#statusModal">  Editar </div></a>
+                    </div>
 
                 </div>
-            </div>
+                <div class="card-body">
 
+                    <h5 class="card-title" id="displayName"></h5>
+                    <hr>
+                    <div>
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8zM5 4.854a.5.5 0 0 0 .707 0L8 2.56l2.293 2.293A.5.5 0 1 0 11 4.146L8.354 1.5a.5.5 0 0 0-.708 0L5 4.146a.5.5 0 0 0 0 .708z"/>
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 2z"/>
+                          </svg><a href="#" data-toggle="modal" data-target="#perfilModal"> Cambiar Imagen</a>
+                    </div>
 
-
-
-
-
-            <div class="card-body">
-
-                <h5 class="card-title" id="displayName"></h5>
-                <hr>
-                <div onclick="deletePhoto()" style="color:#b86434; cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                    <div onclick="deletePhoto()" style="color:#b86434; cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
                     <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
     5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                </svg><a href="#" data-toggle="modal" data-target="#seModal"> Eliminar Imagen</a>
+                </svg><a href="#" data-toggle="modal" data-target="#perfilModal"> Eliminar Imagen</a>
+                    </div>
+
+                    <p class="card-text" id="EditAboutMe"></p>
+
+
                 </div>
-
-                <p class="card-text" id="EditAboutMe"></p>
-                <a href="#" data-toggle="modal" data-target="#myModal"><svg style="color:#884e2c;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                  </svg> Editar Username</a>
-
             </div>
-        </div>
-        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <!-- modal cambiar estado -->
+            <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
 
-                <div class="modal-content">
+                    <div class="modal-content">
 
-                    <div class="modal-header">
+                        <div class="modal-header">
 
-                        <h5 class="modal-title">Cambiar Username</h5><span aria-hidden="true">&times;
+                            <h5 class="modal-title">Cambiar Estado</h5><span aria-hidden="true">&times;
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
 
 
-                    </div>
+                        </div>
 
-                    <div class="modal-body">
-                        <form id="editarUsername">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Nuevo Username</label>
-                                <input type="text" class="form-control" id="newUsername">
-                            </div>
+                        <div class="modal-body">
+                            <form id="editarUsername">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Estado</label>
+                                    <input type="text" class="form-control" id="newStatus">
+                                </div>
 
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="updateUsername()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="seModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">Editar Foto de Perfil</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form id="editarPerfil">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Elegir Foto</label>
-                                <input type="file" class="form-control">
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="update()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="thModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar Username</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form id="editarPerfil">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Editar Username</label>
-                                <input type="text" class="form-control" id="foto">
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="updateUsername()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Añadir Contacto</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                        
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form id="editarPerfil">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Email</label>
-                                <input type="email" class="form-control" id="emailFriend">
-                            </div>
-
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="addFriend()">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!--Modal para enviar fotos-->
-        <div class="modal fade" id="picModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title">Selecciona Foto</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form id="editarPerfil">
-                            <div class="form-group">
-                                <input type="file" class="form-control" id="fotoChat">
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="sendPic()">Guardar</button>
+                            <button type="button" class="btn btn-primary" onclick="updateAboutMe()">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Cambiar contraseña -->
+            <div class="modal fade" id="passModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">Cambiar Contraseña</h5><span aria-hidden="true">&times;
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
+
+
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Contraseña</label>
+                                    <input type="password" class="form-control" id="newPass">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updatePass()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal cambiar Nombre de Usuario -->
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">Cambiar Username</h5><span aria-hidden="true">&times;
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
+
+
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="editarUsername">
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Username</label>
+                                    <input type="text" class="form-control" id="newUsername">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateUsername()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cambiar Foto de Perfil -->
+            <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Foto de Perfil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Elegir Foto</label>
+                                    <input type="file" class="form-control" id="fotoPerfil">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updatePhoto()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agregar Amigo -->
+
+            <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 class="modal-title">Añadir Contacto</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Email</label>
+                                    <input type="email" class="form-control" id="emailFriend">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addFriend()">Añadir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Modal para enviar fotos-->
+            <div class="modal fade" id="picModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Selecciona Foto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <input type="file" class="form-control" id="fotoChat">
+                                </div>
+                            </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="sendPic()">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Cambiar Contraseña-->
 
 
 
