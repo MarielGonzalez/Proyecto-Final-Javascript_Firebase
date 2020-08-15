@@ -73,22 +73,19 @@ Es necesario tener en cuenta las reglas que permiten el acceso, lectura y modifi
 #### Reglas de Firebase Storage 
 Es importante tambien el configurar las reglas que permiten el acceso para añadir contenido dentro de nuestro servidor de archivos de firebase.
 
-`rules_version = '2';
+`
+rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
     allow read, write: if request.auth == null;
-      allow read, write: if request.auth!=null;}}}}``
+      allow read, write: if request.auth!=null;}}}} 
+      `
 
  
  
  
- 
- `
-
-
-
-#### Añadir nuestro proyecto de firebase al HTML　
+ #### Añadir nuestro proyecto de firebase al HTML　
 
 ```javascript
 var firebaseConfig = {
@@ -141,12 +138,12 @@ Al agregar firebase storage podemos subir fotos y videos para compartirlo con to
 ##### Mostar Imagen en la foto de Perfil
 - Para ello se debe acceder a la propiedad foto añadida en la base de datos realtime para obtener el acceso a esta una vez descargada.
 
-#####Mostrar foto de perfil
+##### Mostrar foto de perfil
 - Al llamar la función `getDownloadURL()` obtenemos como resultado una url que podemos usar para actualizar los campos fotos de ambas base de datos en donde el usuario tiene información de su Perfil. Con el observador del Cloud Firestore `.onSnapshot()` tenemos la captura de cada actualización, la cual proyectamos en la etiqueta `<img>` el valor de la url contenida en la variable `<imageElement>` y ubicada en la propiedad `src` de esta.
 
-#####Enviar conversación y fotos
+##### Enviar conversación y fotos
 
 - De  igual manera las conversaciones son enviadas por el valor de los `<input>` en la barra de mensajes y de la misma manera proyectados en el dashboard y replicados en las bases de datos de los Perfiles Creados.
 
-###Notas Finales
+### Notas Finales
 >Los datos enviados en el chat seran leidos en tiempo real por todo aquel que tenga acceso, en este ejemplo la mensajeria no es privada por cada usuario.
