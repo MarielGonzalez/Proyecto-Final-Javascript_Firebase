@@ -248,7 +248,7 @@ s .conversation:hover {
 #new-message-container a {
     display: grid;
     place-content: center center;
-    background-color: #ddbf16;
+    background-color: #e6ab0b;
     border-radius: 100%;
     color: #01050f;
     text-decoration: none;
@@ -317,14 +317,14 @@ s .conversation:hover {
 }
 
 .your-message .message-text {
-    background: #4e7539;
+    background: #55883b;
     color: #eeeeee;
-    border: 1px solid #3e570f;
+    border: 1px solid #619249;
     border-radius: 14px 14px 0 14px;
 }
 
 .other-message .message-text {
-    background: #ebeee9;
+    background: #dce6d5;
     color: #140101;
     border: 1px solid #cfd8bd;
     border-radius: 14px 14px 0 14px;

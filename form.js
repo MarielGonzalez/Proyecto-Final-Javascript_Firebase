@@ -155,16 +155,33 @@ function clearUser() {
 let imageElement = document.querySelector('#image');
 let showName = document.querySelector('#displayName');
 let showStatus = document.querySelector('#aboutMe');
+let showContact = document.querySelector('#UserFriend');
+let showEmail = document.querySelector('#messageFriend');
+let key = firebase.database().ref('Profile/' + user.uid + '/Contactos/').push().key;
 
 firebase.auth().onAuthStateChanged(function(user) {
+
+
     if (user) {
         firebase.database().ref('Profile/' + user.uid).on('value', function(s) {
-                var d = s.val()
-                showName.innerHTML = `<p>${d.username}</p>`
-                showStatus.innerHTML = `<p>${d.aboutMe}</p>`
+            var d = s.val()
+            showName.innerHTML = `<p>${d.username}</p>`
+            showStatus.innerHTML = `<p>${d.aboutMe}</p>`
+            imageElement.src = d.foto
 
-            })
-            //const logout = document.getElementById('out')
+        })
+
+
+        firebase.database().ref('Profile/' + user.uid + '/Contactos' + '/' + key).on('child_added', function(s) {
+            var c = s.val()
+            console.log(c)
+            showContact.innerHTML = `${c.username}`
+            showEmail.innerHTML = `${c.email}`
+
+
+        })
+
+        //const logout = document.getElementById('out')
         document.getElementById("registry").style.display = 'none';
         document.getElementById("login-section").style.display = 'none';
         document.getElementById("fondo").style.display = 'none';
@@ -179,17 +196,12 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("login-section").style.display = 'block';
 
     }
-
     if (foto == null) {
         imageElement.src = user.photoURL
-    } else {
-
-        firebase.database().ref('Profile/' + user.uid).on('value', function(s) {
-            var user = s.val()
-            imageElement.src = user.foto
-        })
-
     }
+
+
+
 
 })
 
@@ -219,18 +231,15 @@ function updateAboutMe() {
 
 }
 
-
 //Actualizar Username
 let updateUsername = () => {
-    let user = firebase.auth().currentUser
-    let newUsername = document.querySelector("#newUsername").value
-    firebase.database().ref('Profile/' + user.uid).update({
-        username: newUsername
-    }).then(alert('borrado'))
-}
-
-
-
+        let user = firebase.auth().currentUser
+        let newUsername = document.querySelector("#newUsername").value
+        firebase.database().ref('Profile/' + user.uid).update({
+            username: newUsername
+        }).then(alert('borrado'))
+    }
+    //Actualizar Contraseña
 function updatePass() {
     var user = firebase.auth().currentUser;
     let newPassword = document.getElementById('newPass').value
@@ -243,7 +252,7 @@ function updatePass() {
         console.log(error.message, error.code)
     });
 }
-
+//Actualizar foto de perfil
 function updatePhoto() {
     var user = firebase.auth().currentUser;
 
@@ -274,43 +283,62 @@ function updatePhoto() {
             //})
     }
 }
-
+//Enviar mensajes
 function sendMessage() {
     let message = document.getElementById('message').value
-    var user = firebase.auth().currentUser;
+    let user = firebase.auth().currentUser;
     db.collection("Conversations").add({
-        sender: firebase.auth().currentUser.displayName,
+        sender: user,
         messages: message
     }).then(result => {
-        alert('Mensaje Enviado')
+        //alert('Mensaje Enviado')
         message = ""
 
     })
 }
-
-
-
-let chat = document.getElementById('myMessage');
 //Dibujar las burbujas de chat en la conversacion
+let youChat = document.getElementById('otherMessage')
+let myChat = document.getElementById('myMessage');
+
+
 (() => {
     db.collection("Conversations").onSnapshot((doc) => {
-        chat.innerHTML = ""
+        myChat.innerHTML = ""
+        youChat.innerHTML = ""
+
         for (let i of doc.docs) {
-            chat.innerHTML += ` 
+            if (i.data().sender == firebase.auth().currentUser.displayName) {
+
+                myChat.innerHTML += ` 
                 
-                <div class="message-text"><p><b>${i.data().messages}</b></p> <div onclick="deleteChat('${i.id}')" style="color:#d1cac6;cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                <div class="message-text">
+                <p><b>${i.data().messages}</b></p><div class="created-date" id="fecha" style="color:white"> ${h +':'+ n} <span onclick="deleteChat('${i.id}')" style="color:#d1cac6;cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
                 <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
-5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-            </svg></div>
+5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/> 
+            </span>`
+
+            } else {
+                youChat.innerHTML +=
+                    ` 
+                    <div class="message-text">          
+                <p><b>${i.data().messages}</b></p> <div class="created-date" id="fecha" style="color:black"> ${h +':'+ n} </div>
                 </div>
-                
-               
-               
-                    
-                    `
+            `
+            }
+
+
+
+
+
+
+
         }
     })
 })();
+
+
+
+
 
 let sendPic = () => {
     var user = firebase.auth().currentUser;
@@ -355,6 +383,9 @@ let sendPic = () => {
 
 //Dibujar las burbujas de chat en la conversacion
 let pic = document.getElementById('pictures');
+let fecha = new Date()
+var n = fecha.getUTCMinutes();
+var h = fecha.getUTCHours();
 
 (() => {
     db.collection("Chat_Pictures").onSnapshot((doc) => {
@@ -363,12 +394,12 @@ let pic = document.getElementById('pictures');
         for (let i of doc.docs) {
 
             pic.innerHTML += ` 
-            <div class="message-text"><img src="${i.data().image}" width="500px" height="300px">  <div onclick="deletePhoto('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+            <div class="message-text"><img src="${i.data().image}" width="500px" height="500px">  <div onclick="deletePhoto('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
             <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-        </svg></div>
+        </svg>  ${h +':'+ n} </div> 
             </div>
-                         
+                    
                                   
                 `;
 
@@ -388,6 +419,24 @@ let deleteChat = (id) => {
 
 }
 
+
+
+let deleteAll = () => {
+    db.collection("Conversations").get()
+        .then(querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.delete().then(() => {
+                    console.log("Documento eliminado con éxito!");
+                }).catch(function(error) {
+                    console.error("Error eliminando documento: ", error);
+                });
+            });
+        })
+        .catch(function(error) {
+            console.log("Error Obteniendo Documentos: ", error);
+        })
+}
+
 let deletePhoto = (id) => {
     db.collection("Chat_Pictures").doc(id).delete().then(function() {
         //alert('Borrado');
@@ -399,91 +448,22 @@ let deletePhoto = (id) => {
 
 }
 
+//Añadir Contactos
+let addFriend = () => {
+    var user = firebase.auth().currentUser;
+
+    let contactEmail = document.getElementById('contactEmail').value
+    firebase.app().database().ref('Profile').orderByChild('email')
+        .equalTo(contactEmail).once("value", snapshot => {
+
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                console.log(userData);
+                firebase.database().ref('Profile/' + user.uid + '/Contactos' + '/' + key).set(userData).then(alert('Contacto Añadido'))
 
 
-
-//Prueba con otras formas de implementacion 
-/*Borrar mensajes de la conversacion en el realtime database
-let deleteChat = (id) => {
-    //firebase.database().ref('Profile/' + user.uid).remove() {
-        //alert('Mensaje Borrado');
-        db.collection.delete().then({
-    }).catch(function(error) {
-        console.log('Error', error)
-
-    })
-
-}
-//firebase.database().ref('Profile/conversations').on('value', snap => chat.innerHTML)
-/*database.ref('Profile').on("child_added", function(snap) {
-    var user = snap.val();
-    const imageElement = document.querySelector('#image');
-    imageElement.src = user.foto;
-
-})
-
-
-    let message = document.getElementById('message').value
-    firebase.database().ref('Profile/conversations').set({
-            conversations: {
-                sender: firebase.auth().currentUser.displayName,
-                messages: message
+            } else {
+                console.log('Usuario Inexistente')
             }
-
-        },
-
-    ).then(res => {
-
-        alert('Mensaje Enviado')
-
-    })
-    message.value = ""
-
-function signUp() {
-
-    const email = document.getElementById("inputEmail").value;
-    const passw = document.getElementById("inputPsswd").value;
-    let nombre = document.getElementById("inputName").value;
-
-    if (email == "" || passw == "" || nombre == "") {
-        alert('Empty Fields')
-        clearUser()
-
-    } else {
-
-        firebase.auth().createUserWithEmailAndPassword(email, passw)
-            .then((res) => {
-
-                db.collection('UserProfile/' + res.user.uid)
-                    .add({
-                        uid: nombre,
-                        email: res.user.email,
-                        photo: res.user.photoURL,
-                        password: res.user.password
-                    }).then(
-                        alert('User Created')
-                    )
-
-
-                //savedProfile(res.user)
-                alert(`${nombre} Registrado Correctamente`)
-
-            })
-
-
-        .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            alert('Error en el Registro');
-            console.log(errorMessage)
         });
-
-        clearUser()
-
-
-
-    }
-
-
-
-}*/
+}
