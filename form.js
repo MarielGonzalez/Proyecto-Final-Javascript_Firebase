@@ -31,30 +31,31 @@ var db = firebase.firestore();
 
 //Funcion para registrar un usuario
 
-let name = document.getElementById("inputName").value;
-let email = document.getElementById("inputEmail").value;
-let passw = document.getElementById("inputPsswd").value;
+//let name = document.getElementById("inputName").value;
+//let email = document.getElementById("inputEmail").value;
+//let passw = document.getElementById("inputPsswd").value;
 
 function signUp() {
 
-    name = document.getElementById("inputName").value;
+    let name = document.getElementById("inputName").value;
     email = document.getElementById("inputEmail").value;
     passw = document.getElementById("inputPsswd").value;
     if (email == "" || passw == "" || name == "") {
         alert('Empty Fields')
-        clearUser()
+
 
     } else {
         firebase.auth().createUserWithEmailAndPassword(email, passw)
             .then(res => {
+
                 document.getElementById("registry").style.display = 'none';
                 console.log(res.user)
-                db.collection('UserProfile')
-                    .add({
+                db.collection('UserProfile').doc(`${res.user.uid}`)
+                    .set({
                         uid: res.user.uid,
-                        nombre: name,
+                        username: name,
                         email: res.user.email,
-                        foto: res.user.photoURL,
+                        foto: res.user.photoURL || 'foto',
 
                     })
                 alert('Usuario Registrado Correctamente: ' + name)
@@ -107,9 +108,9 @@ function googleLogin() {
     var user = firebase.auth().currentUser;
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(r => {
-        console.log('Listo')
+        console.log('Usuario inicio con google')
         console.log(r.user)
-        db.collection('UserProfile').doc()
+        db.collection('UserProfile').doc(`${r.user.uid}`)
             .set({
                 uid: r.user.uid,
                 username: r.user.displayName,
@@ -117,7 +118,7 @@ function googleLogin() {
                 foto: r.user.photoURL,
 
             })
-        alert('Usuario Registrado Correctamente: ' + name)
+        alert('Bienvenido: ' + name)
 
         savedProfile(r.user)
 
@@ -126,18 +127,16 @@ function googleLogin() {
 }
 
 //Repetir los usuarios en la base de datos realtime
+let defaultPic = document.getElementById('')
+
 function savedProfile(user) {
-    //let name = document.getElementById("inputName").value;
+
     //nombre = getId('inputName')
     let usuario = {
         uid: user.uid,
         username: user.displayName || name,
         email: user.email || email,
-        foto: user.photoURL || 'foto',
-        conversation: {
-            sender: 'undefined',
-            messages: 'undefined'
-        }
+        foto: user.photoURL || 'foto'
     }
     firebase.database().ref('Profile/' + user.uid).set(usuario)
 
@@ -237,7 +236,7 @@ let updateUsername = () => {
         let newUsername = document.querySelector("#newUsername").value
         firebase.database().ref('Profile/' + user.uid).update({
             username: newUsername
-        }).then(alert('borrado'))
+        }).then(alert('Username Updated'))
     }
     //Actualizar Contraseña
 function updatePass() {
@@ -283,18 +282,34 @@ function updatePhoto() {
             //})
     }
 }
+
+let pic = document.getElementById('pictures');
+let fecha = new Date()
+var m = fecha.getMinutes();
+var h = fecha.getHours();
+
 //Enviar mensajes
 function sendMessage() {
-    let message = document.getElementById('message').value
-    let user = firebase.auth().currentUser;
-    db.collection("Conversations").add({
-        sender: user,
-        messages: message
-    }).then(result => {
-        //alert('Mensaje Enviado')
-        message = ""
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('Profile/' + user.uid).on('value', function(s) {
+        var p = s.val()
+        console.log(p)
+        let date = (h + ':' + m)
+        let message = document.getElementById('message').value
 
+        db.collection("Conversations").add({
+            sender: user.displayName || p.username,
+            messages: message,
+            uid: user.uid,
+            date: date
+        }).then(result => {
+            //alert('Mensaje Enviado')
+
+
+        })
     })
+    message = ""
+
 }
 //Dibujar las burbujas de chat en la conversacion
 let youChat = document.getElementById('otherMessage')
@@ -302,17 +317,18 @@ let myChat = document.getElementById('myMessage');
 
 
 (() => {
-    db.collection("Conversations").onSnapshot((doc) => {
+
+    db.collection("Conversations").orderBy('date').onSnapshot((doc) => {
         myChat.innerHTML = ""
         youChat.innerHTML = ""
 
         for (let i of doc.docs) {
-            if (i.data().sender == firebase.auth().currentUser.displayName) {
+            if (i.data().uid == firebase.auth().currentUser.uid) {
 
                 myChat.innerHTML += ` 
                 
                 <div class="message-text">
-                <p><b>${i.data().messages}</b></p><div class="created-date" id="fecha" style="color:white"> ${h +':'+ n} <span onclick="deleteChat('${i.id}')" style="color:#d1cac6;cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                <p>${i.data().sender}: <b>${i.data().messages}</b></p><div class="created-date" id="fecha" style="color:white"> ${i.data().date} <span onclick="deleteChat('${i.id}')" style="color:#d1cac6;cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
                 <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/> 
             </span>`
@@ -321,23 +337,16 @@ let myChat = document.getElementById('myMessage');
                 youChat.innerHTML +=
                     ` 
                     <div class="message-text">          
-                <p><b>${i.data().messages}</b></p> <div class="created-date" id="fecha" style="color:black"> ${h +':'+ n} </div>
+                <p>${i.data().sender}:  <b>${i.data().messages}</b></p> <div class="created-date" id="fecha" style="color:black"> ${i.data().date} </div>
                 </div>
             `
             }
-
-
-
-
-
-
+            let scroll = document.getElementById("messageFriend")
+            scroll.scrollTop = scroll.scrollHeight
 
         }
     })
 })();
-
-
-
 
 
 let sendPic = () => {
@@ -382,10 +391,7 @@ let sendPic = () => {
 }
 
 //Dibujar las burbujas de chat en la conversacion
-let pic = document.getElementById('pictures');
-let fecha = new Date()
-var n = fecha.getUTCMinutes();
-var h = fecha.getUTCHours();
+
 
 (() => {
     db.collection("Chat_Pictures").onSnapshot((doc) => {
@@ -394,10 +400,10 @@ var h = fecha.getUTCHours();
         for (let i of doc.docs) {
 
             pic.innerHTML += ` 
-            <div class="message-text"><img src="${i.data().image}" width="500px" height="500px">  <div onclick="deletePhoto('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+            <div class="message-text">${i.data().sender}:  <img src="${i.data().image}" width="500px" height="500px">  <div onclick="deletePhoto('${i.id}')" style="color:#d1cac6;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
             <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-        </svg>  ${h +':'+ n} </div> 
+        </svg>  ${h +':'+ m} </div> 
             </div>
                     
                                   
@@ -448,11 +454,16 @@ let deletePhoto = (id) => {
 
 }
 
+
 //Añadir Contactos
 let addFriend = () => {
     var user = firebase.auth().currentUser;
-
     let contactEmail = document.getElementById('contactEmail').value
+    db.collection("UserProfile").doc(`${user.uid}`).collection("Contacts").doc(`${contactEmail}`).collection("Conversations").add({
+
+        email: contactEmail,
+
+    })
     firebase.app().database().ref('Profile').orderByChild('email')
         .equalTo(contactEmail).once("value", snapshot => {
 
