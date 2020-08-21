@@ -31,9 +31,16 @@ var db = firebase.firestore();
 
 //Funcion para registrar un usuario
 
-//let name = document.getElementById("inputName").value;
-//let email = document.getElementById("inputEmail").value;
-//let passw = document.getElementById("inputPsswd").value;
+let warnings = document.getElementById('alert')
+warnings.style.color = 'red'
+
+
+let warningsLog = document.getElementById('alertLog')
+warningsLog.style.color = 'red'
+
+
+let testEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+
 
 function signUp() {
 
@@ -41,8 +48,16 @@ function signUp() {
     email = document.getElementById("inputEmail").value;
     passw = document.getElementById("inputPsswd").value;
     if (email == "" || passw == "" || name == "") {
-        alert('Empty Fields')
+        //alert('Empty Fields')
+        console.log(warnings)
+        warnings.innerHTML = `Debe Completar los Campos <br>`
 
+
+    } else if (!testEmail.test(email.value)) {
+        warnings.innerHTML = `Email No Valido. <br>`
+
+    } else if (email.value.length <= 8) {
+        warnings.innerHTML = `La Contraseña debe ser mayor a 8 caracteres. <br>`
 
     } else {
         firebase.auth().createUserWithEmailAndPassword(email, passw)
@@ -76,30 +91,35 @@ function signUp() {
 
 // funcion para loguearse
 function login() {
+    let logemail = document.getElementById("loginEmail").value;
+    let logpassw = document.getElementById("loginPsswd").value;
 
-    const logemail = document.getElementById("loginEmail").value;
-    const logpassw = document.getElementById("loginPsswd").value;
+    if (logemail == "" || logpassw == "") {
+        //alert('Empty Fields')
+        warningsLog.innerHTML = `Debe Completar los Campos <br>`
 
-    firebase.auth().signInWithEmailAndPassword(logemail, logpassw).then(m => {
-        console.log(m)
-        alert('Usted ha iniciado sesion')
+    } else {
 
-
-    }).catch(function(error) {
-
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        if (errorCode === 'auth/wrong-password') {
-            alert('Contraseña Erronea.');
-        } else if (errorCode === '-Not found authentication user' || errorCode === 'auth / invalid-mail') {
-            alert('Correo invalido')
-        } else { alert(errorMessage) }
-        console.log(error);
-
-        console.log(errorMessage)
-    });
+        firebase.auth().signInWithEmailAndPassword(logemail, logpassw).then(m => {
+            console.log(m)
+            alert('Usted ha iniciado sesion')
 
 
+        }).catch(function(error) {
+
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/wrong-password') {
+                warnings.innerHTML += `Contraseña Erronea <br>`
+            } else if (errorCode === '-Not found authentication user' || errorCode === 'auth / invalid-mail') {
+                warnings.innerHTML += `Correo Erroneo <br>`
+            } else { alert(errorMessage) }
+            console.log(error);
+
+            console.log(errorMessage)
+        });
+
+    }
 
 };
 

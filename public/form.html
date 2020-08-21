@@ -19,9 +19,11 @@
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
 
+    <link rel="icon" type="image/png" href="/public/whatsapp.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Mandali&display=swap" rel="stylesheet">
 
-
-    <title>Whatsapp</title>
+    <title>mineChat</title>
 </head>
 
 <body>
@@ -308,20 +310,23 @@
 
 
         <div class="img" id="fondo">
-            <img src="chatting.svg ">
+            <h1> Let Your </h1><br>
+            <img src="/public/undraw_team_chat_y27k.svg" style="width: 570px; height: 500px;"><br>
+            <h1 style="margin-left: 10px;font-family: 'Jost', sans-serif;"> Opnion Be Free! </h1> <br>
         </div>
         <div class="centerForm">
             <section id="registry">
                 <form class="form">
 
-                    <h1>Sign Up</h1>
+                    <h1 style="font-family: 'Jost', sans-serif;
+                    font-family: 'Mandali', sans-serif;">Registrate</h1>
 
                     <div class="input-form name">
                         <div class="input-group mb-3 ">
                             <div class="input-group-prepend ">
                                 <span class="input-group-text "><i class="fas fa-user-circle"></i></span>
                             </div>
-                            <input id="inputName" type="text" class="form-control" placeholder="Enter your Username ">
+                            <input id="inputName" type="text" class="form-control" placeholder="Enter your Username" required>
 
                         </div>
 
@@ -342,7 +347,7 @@
                             <div class="input-group-prepend ">
                                 <span class="input-group-text "><i class="fas fa-lock "></i></span>
                             </div>
-                            <input id="inputPsswd" type="password" class="form-control" placeholder="Enter your password " required>
+                            <input id="inputPsswd" type="password" class="form-control" placeholder="Enter your password" required>
                         </div>
                     </div>
 
@@ -351,9 +356,10 @@
                     <button onclick="googleLogin()" type="button" class="btn btn-outline-dark button" style="margin-bottom: 13px;"><img  width="20px" src="https://img.icons8.com/color/48/000000/google-logo.png"/>    Accede con Google </button>
 
 
-                    <div class="alert alert-warning" role="alert" id="alert" onclick="move()">
+                    <div class="alert alert-warning" role="alert" onclick="move()">
                         <p>¿Ya estas registrado? <a href="#login-section" class="alert-link ">Accede aqui </a> para ingresar.
                         </p>
+                        <p id="alert"></p>
                     </div>
 
 
@@ -363,14 +369,14 @@
 
             <section id="login-section">
                 <form class="form">
-                    <h1>Login</h1>
+                    <h1 style="color: #030800;"> Ingresa</h1>
 
                     <div class="input-form email">
                         <div class="input-group mb-3 ">
                             <div class="input-group-prepend ">
                                 <span class="input-group-text "><i class="fas fa-envelope"></i></i></span>
                             </div>
-                            <input id="loginEmail" type="email" class="form-control" placeholder="Enter your email">
+                            <input id="loginEmail" type="email" class="form-control" placeholder="Enter your email" required>
                         </div>
                     </div>
 
@@ -380,7 +386,7 @@
                             <div class="input-group-prepend ">
                                 <span class="input-group-text "><i class="fas fa-lock "></i></span>
                             </div>
-                            <input id="loginPsswd" type="password" class="form-control " placeholder="Enter your password " />
+                            <input id="loginPsswd" type="password" class="form-control " placeholder="Enter your password" required>
                         </div>
                     </div>
 
@@ -392,6 +398,7 @@
                     <div class="alert alert-warning" role="alert " id="alert" onclick="back()">
                         <p>¿Aun no estas registrado? <a href="#registry" class="alert-link ">Accede aqui </a> para ingresar.
                         </p>
+                        <p id="alertLog"></p>
                     </div>
             </section>
 
