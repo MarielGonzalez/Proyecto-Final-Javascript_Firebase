@@ -3,14 +3,18 @@
 [![](https://lh3.googleusercontent.com/proxy/c9Nb2tBEAnRQ6rWZBx4dCF0W9LRZUjq-NWRB7MWFF_qbk2OI0AGZuE7LhG7d3YExnNnQLvTe25zapyzgXbwFPTtBd8W3itp5KzjI__BlodS_A2ec_1vxwwZdpqzXBO1aoqwSuXTUpw)](http://https://lh3.googleusercontent.com/proxy/c9Nb2tBEAnRQ6rWZBx4dCF0W9LRZUjq-NWRB7MWFF_qbk2OI0AGZuE7LhG7d3YExnNnQLvTe25zapyzgXbwFPTtBd8W3itp5KzjI__BlodS_A2ec_1vxwwZdpqzXBO1aoqwSuXTUpw)
 
 [![](https://firebase.google.com/images/brand-guidelines/logo-standard.png)](http://https://firebase.google.com/images/brand-guidelines/logo-standard.png)
-- Esta aplicación es una simulación de una app en un entorno completamente de una red social de mensajería en tiempo real, modelando una versión de "WhatsApp". 
+- Esta aplicación es una simulación de una app en un entorno completamente de una red social de mensajería en tiempo real publico, modelando una versión de "WhatsApp", llamada "mineChat". 
 
 # Caracteristicas:
 1. Esta App Web esta escrita sin ningún Framework de JavaScript 
 2. Emplea los servicios de registro de usuarios, base de datos en tiempo real y un servidor de archivos de la plataforma Firebase de Google.
-3. Hecha en una sola pagina HTML (SPA, con HTML, CSS, Boostrap)
 
 
+# Herramientas:
+1. Boostrap
+2. HTML, CSS y JAVASCRIPT
+3. Cuenta de Firebase
+4. FontAwsome
 
 
 #### Instalacion de Bootstrap
@@ -40,17 +44,17 @@
  ```
 
 
-# Instalacion y Configuración
+# Instalacion y Configuración de Firebase
 
 > Instalación de Firebase al proyecto
 
-Antes de empezar en HTML, es necesaria la configuración e inicialización de la plataforma de Firebase a nuestro proyecto. Aqui en detalle [la documentación](https://firebase.google.com/docs/web/setup) explica cómo hacerlo para proyectos web
+Antes de empezar en Javascript, es necesaria la configuración e inicialización de la plataforma de Firebase a nuestro proyecto. Aqui en detalle [la documentación](https://firebase.google.com/docs/web/setup) explica cómo hacerlo para proyectos web.
                     
 > Consideraciones y Pasos Iniciales
 
--  Firebase Autentication
+- Firebase Autentication
 - Firebase Realtime Database
-- Firebase Firestore
+- Firebase Cloud Firestore
 
 ### Pasos para Registrar y Administrar Usuarios
 
@@ -143,7 +147,29 @@ Al agregar firebase storage podemos subir fotos y videos para compartirlo con to
 
 ##### Enviar conversación y fotos
 
-- De  igual manera las conversaciones son enviadas por el valor de los `<input>` en la barra de mensajes y de la misma manera proyectados en el dashboard y replicados en las bases de datos de los Perfiles Creados.
+- De  igual manera las conversaciones son enviadas por el valor de los `<input>` en la barra de mensajes y de la misma manera proyectados en el dashboard de mensajeria y replicados en las bases de datos de los Perfiles Creados.
+
+### Cambiar Foto, Contraseña e Username
+
+- Con el registro del perfil de usuario en la base de datos en tiempo real y en la coleccion, puedes acceder a ellas mediante un metodo en comun `update()`, accediendo a estos mediante las referencias.
+ 
+
+```Javascript
+
+   firebase.database().ref('Profile/' + user.uid).update({
+        name: newName
+    }).then(console.log('Name updated')) 
+
+ db.collecion('Profiles').doc(`${user.uid}`).update({
+        name: newName
+    }).then(console.log('Name updated')) 
+
+
+```
+
 
 ### Notas Finales
->Los datos enviados en el chat seran leidos en tiempo real por todo aquel que tenga acceso, en este ejemplo la mensajeria no es privada por cada usuario.
+>Los datos enviados en el chat seran leidos en tiempo real por todo aquel que tenga acceso, en este ejemplo la mensajeria es publica para cada usuario que haya iniciado sesion.
+
+
+
