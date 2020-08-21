@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/7a169b1278.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="styleForm.css">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
+
+
+
+    <title>Whatsapp</title>
+</head>
+
+<body>
+
+    <!-- Barra de navevgacion -->
+    <section id="nav" style="display: none;">
+        <nav class="navbar navbar-light" style="background-color: #badfab;">
+            <a class="navbar-brand"> <img src="chat.png" width="250" height="50"></a>
+            <form class="form-insline">
+
+
+
+            </form>
+            <div class="btn-group dropleft">
+                <a style="color: seashell;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div><i class="fas fa-cog" style="font-size: 14px; cursor: pointer;"></i></div>
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#passModal"><svg style="color:#884e2c;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg> Cambiar Contraseña</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal"><svg style="color:#884e2c;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                      </svg>  Cambiar Username </a>
+                    <a class="dropdown-item" href="#" onclick="logOut()"><i class="fas fa-sign-out-alt" style="color:#884e2c;"></i> Cerrar Session</a>
+                </div>
+            </div>
+
+
+        </nav>
+
+        <!-- Perfil -->
+        </div>
+        <div class="card" style="width: 18rem; position:absolute; margin: 20px;" id="card">
+
+            <img class="card-img-top rounded float-left" alt="Foto del usuario" id="image" style="cursor: pointer;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">Acerca de Mi:
+                    <p id="aboutMe"></p>
+                    <div style="cursor: pointer;"><i class="fas fa-pen-square"></i><a href="#" data-toggle="modal" data-target="#statusModal">  Editar </div></a>
+                        <div>
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-upload" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8zM5 4.854a.5.5 0 0 0 .707 0L8 2.56l2.293 2.293A.5.5 0 1 0 11 4.146L8.354 1.5a.5.5 0 0 0-.708 0L5 4.146a.5.5 0 0 0 0 .708z"/>
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 2z"/>
+                          </svg><a href="#" data-toggle="modal" data-target="#perfilModal"> Cambiar Imagen</a>
+                        </div>
+
+                        <div onclick="deletePhoto()" style="color:#b86434; cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                    <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
+    5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                </svg><a href="#" data-toggle="modal" data-target="#perfilModal"> Eliminar Imagen</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+
+                    <h5 class="card-title" id="displayName"></h5>
+                    <hr>
+
+
+                    <p class="card-text" id="EditAboutMe"></p>
+
+
+                </div>
+            </div>
+            <!-- modal cambiar estado -->
+            <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">Cambiar Estado</h5><span aria-hidden="true">&times;
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
+
+
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Estado</label>
+                                    <input type="text" class="form-control" id="newStatus">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateAboutMe()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cambiar contraseña -->
+            <div class="modal fade" id="passModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">Cambiar Contraseña</h5><span aria-hidden="true">&times;
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
+
+
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Contraseña</label>
+                                    <input type="password" class="form-control" id="newPass">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updatePass()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal cambiar Nombre de Usuario -->
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">Cambiar Username</h5><span aria-hidden="true">&times;
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button></span>
+
+
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Nuevo Username</label>
+                                    <input type="text" class="form-control" id="newUsername">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateUsername()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cambiar Foto de Perfil -->
+            <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Foto de Perfil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Elegir Foto</label>
+                                    <input type="file" class="form-control" id="fotoPerfil">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updatePhoto()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agregar Contacto -->
+
+            <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 class="modal-title">Añadir Contacto</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Email</label>
+                                    <input type="text" class="form-control" id="contactEmail">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addFriend()">Añadir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Modal para enviar fotos-->
+            <div class="modal fade" id="picModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Selecciona Foto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <input type="file" class="form-control" id="fotoChat">
+                                </div>
+                            </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="sendPic()">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Borrar Chat-->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="font-size: 20px;">¿Deseas borrar el Chat?</h5>
+                            <button style="width: 30px;" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        
+                        </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <button onclick="deleteAll()" style="width: 100px; margin-left: 13px;" type="button" class="btn btn-light" data-dismiss="modal">Si</button><button style="width: 100px; margin-left: 13px;" type="button" class="btn btn-light">No</button>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+    </section>
+
+    <div class="content">
+
+
+
+        <div class="img" id="fondo">
+            <img src="chatting.svg ">
+        </div>
+        <div class="centerForm">
+            <section id="registry">
+                <form class="form">
+
+                    <h1>Sign Up</h1>
+
+                    <div class="input-form name">
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text "><i class="fas fa-user-circle"></i></span>
+                            </div>
+                            <input id="inputName" type="text" class="form-control" placeholder="Enter your Username ">
+
+                        </div>
+
+                    </div>
+
+                    <div class="input-form email">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text "><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input id="inputEmail" type="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+
+                    <div class="input-form pass">
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text "><i class="fas fa-lock "></i></span>
+                            </div>
+                            <input id="inputPsswd" type="password" class="form-control" placeholder="Enter your password " required>
+                        </div>
+                    </div>
+
+                    <button onclick="signUp()" type="button" class="btn btn-success button">Sign Up</button>
+                    <hr>
+                    <button onclick="googleLogin()" type="button" class="btn btn-outline-dark button" style="margin-bottom: 13px;"><img  width="20px" src="https://img.icons8.com/color/48/000000/google-logo.png"/>    Accede con Google </button>
+
+
+                    <div class="alert alert-warning" role="alert" id="alert" onclick="move()">
+                        <p>¿Ya estas registrado? <a href="#login-section" class="alert-link ">Accede aqui </a> para ingresar.
+                        </p>
+                    </div>
+
+
+
+                </form>
+            </section>
+
+            <section id="login-section">
+                <form class="form">
+                    <h1>Login</h1>
+
+                    <div class="input-form email">
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text "><i class="fas fa-envelope"></i></i></span>
+                            </div>
+                            <input id="loginEmail" type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                    </div>
+
+
+                    <div class="input-form pass ">
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend ">
+                                <span class="input-group-text "><i class="fas fa-lock "></i></span>
+                            </div>
+                            <input id="loginPsswd" type="password" class="form-control " placeholder="Enter your password " />
+                        </div>
+                    </div>
+
+                    <button onclick="login()" type="button" class="btn btn-info button ">Sign In</button>
+                    <hr>
+
+                    <button onclick="googleLogin()" type="button" class="btn btn-outline-dark button" style="margin-bottom: 13px;"><img  width="20px" src="https://img.icons8.com/color/48/000000/google-logo.png"/>    Accede con Google </button>
+                    <br>
+                    <div class="alert alert-warning" role="alert " id="alert" onclick="back()">
+                        <p>¿Aun no estas registrado? <a href="#registry" class="alert-link ">Accede aqui </a> para ingresar.
+                        </p>
+                    </div>
+            </section>
+
+
+
+        </div>
+
+        <section id="dashboard" style="display: none;">
+
+            <div class="dash">
+
+                <div id="chatbox">
+
+                    <div id="search-container">
+                        <input type="text" placeholder="Search">
+
+
+                    </div>
+
+                    <div id="conversation-list">
+                        <div class="conversation active">
+                            <!--aqui va un imagem de los usuarios friends-->
+                            <div id="UserFriend" class="title-text"> </div>
+                            <div class="created-date" id="fecha"></div>
+                            <div class="conversation-message" id="messageFriend"></div>
+                        </div>
+
+                    </div>
+
+                    <div id="new-message-container">
+                        <a href="#" data-toggle="modal" data-target="#chatModal">+</a>
+
+                    </div>
+
+                    <div id="chat-title">
+
+                        <span id="user">MyChat</span>
+                        <a href="#" data-toggle="modal" data-target="#deleteModal">
+                            <div style="color:#8f4920;    cursor: pointer;" alt="delete conversations"><svg width="1em" height="1em" viewBox="0 0 16 16 " class="bi bi-trash-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                            <path fill-rule="evenodd " d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8
+                5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                        </svg></div>
+                        </a>
+
+
+
+                    </div>
+
+                    <div id="chat-message-list">
+                        <div class="message-row your-message" id="pictures"></div>
+                        <div class="message-row your-message" id="myMessage">
+
+                        </div>
+
+                        <div class="message-row other-message" id="otherMessage">
+                            <div class="message-text" id="otherMessa"></div>
+                            <div class="message-time" id="otherM"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="chat-form">
+
+                        <a data-toggle="modal" data-target="#picModal" style="cursor: pointer;"><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-card-image" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                            <path d="M10.648 7.646a.5.5 0 0 1 .577-.093L15.002 9.5V13h-14v-1l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71z"/>
+                            <path fill-rule="evenodd" d="M4.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                            
+                        </svg></a>
+                        <input type="text" placeholder="Type a message" id="message">
+                        <div onclick="sendMessage()" style="cursor: pointer; border-style: none; position: absolute; margin-left: 45em; margin-right: 1em; margin-top: 5px; padding-top: 15px; "><svg width="2em " height="2em " viewBox="0 0 16 16
+                            " class="bi bi-arrow-right-circle-fill " fill="currentColor " xmlns="http://www.w3.org/2000/svg ">
+                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-8.354 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.793 7.5H5a.5.5 0 0 0 0 1h4.793l-2.147 2.146z "/>
+                          </svg></div>
+
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+
+
+            </div>
+        </section>
+
+
+
+        <!--  Login Form -->
+
+        <script src="form.js"></script>
+
+        <!-- Optional JavaScript -->
+        <!--jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js " integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj " crossorigin="anonymous "></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js " integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI " crossorigin="anonymous "></script>
+
+
+</body>
+
+</html>
