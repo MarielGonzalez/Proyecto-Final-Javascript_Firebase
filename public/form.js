@@ -232,6 +232,7 @@ function logOut() {
         document.getElementById("login-section").style.display = 'none';
         document.getElementById("fondo").style.display = 'block';
         logout.classList.add('hide')
+        window.location.reload()
 
         // Sign-out successful.
     }).catch(function(error) {
