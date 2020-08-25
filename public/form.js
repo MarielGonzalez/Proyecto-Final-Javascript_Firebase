@@ -56,7 +56,7 @@ function signUp() {
     } else if (testEmail.test(email.value)) {
         warnings.innerHTML = `Email No Valido. <br>`
 
-    } else if (passw.value.length <= 8) {
+    } else if (passw.length <= 6) {
         warnings.innerHTML = `La Contraseña debe ser mayor a 8 caracteres. <br>`
 
     } else {
