@@ -207,7 +207,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("nav").style.display = 'block';
         document.getElementById("dashboard").style.display = 'block';
 
-
+        document.getElementById("body").style.background = 'white'
     } else {
         document.getElementById("registry").style.display = 'none';
         document.getElementById("nav").style.display = 'none';
